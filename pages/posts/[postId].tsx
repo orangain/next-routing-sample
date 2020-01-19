@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 
 import Link from "next/link";
 
 import { Post } from "../../src/domain/post";
 import { getPost } from "../../src/api/post";
+import { prevUrl } from "../../src/util/router";
 
 const PostDetailPage: React.FC = () => {
   const [post, setPost] = useState<Post | null>(null);
@@ -19,15 +20,23 @@ const PostDetailPage: React.FC = () => {
     getPost(postId).then(setPost);
   }, [postId]);
 
+  const handleBack = () => {
+    if (prevUrl) {
+      window.history.back();
+    } else {
+      Router.push("/posts");
+    }
+  };
+
   if (!post) {
     return <div>Loading...</div>;
   }
 
   return (
     <article>
-      <Link href="/posts">
-        <a>←</a>
-      </Link>
+      <a href="#" onClick={handleBack}>
+        ←
+      </a>
 
       <h1>{post.title}</h1>
       <div>{post.body}</div>
