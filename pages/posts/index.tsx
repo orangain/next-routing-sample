@@ -6,6 +6,11 @@ import Router, { useRouter } from "next/router";
 import { Post } from "../../src/domain/post";
 import { getPosts } from "../../src/api/post";
 
+// スクロール位置を手動で管理する
+if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
+
 const PostListPage: NextPage = () => {
   const router = useRouter();
   const [q, setQ] = useState((router.query.q as string) || "");
